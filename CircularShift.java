@@ -3,7 +3,7 @@ public class CircularShift extends Filter{
 
 	private void shiftString(String[] inputArray){
 		String temp = inputArray[0];
-		for(int i = 0; i < inputArray.length; i++){
+		for(int i = 0; i < inputArray.length - 1; i++){
 			inputArray[i] = inputArray[i + 1];
 		}
 		inputArray[inputArray.length - 1] = temp;
@@ -11,16 +11,22 @@ public class CircularShift extends Filter{
 
 	@Override
 	public void run() {
-		try{
-			String input = pull();
-			write(input);
+		while(true){
+			try{
+				String data = pull();
+				write(data);
 
-			String[] inputArray = input.split(" ");
-			for(int i = 0; i < inputArray.length; i++){
-				shiftString(inputArray);
-				write(String.join(" ", inputArray));
+				if(data != null){
+					String[] dataArray = data.split(" ");
+					for(int i = 1; i < dataArray.length; i++){
+						shiftString(dataArray);
+						write(String.join(" ", dataArray));
+					}
+				}
+
+			}catch(Exception e){
+				System.out.println(e);
 			}
-
-		}catch(Exception e){}
+		}
 	}
 }

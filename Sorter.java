@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Collections;
+import comparator.*;
 
 public class Sorter extends Filter{
 
@@ -7,18 +8,21 @@ public class Sorter extends Filter{
 
 	@Override
 	public void run() {
+
 		while(true){
 			try{
-				write(pull());
+				String data = pull();
+				if(data != null){
+					sortedList.add(data);
+				}else{
+					Collections.sort(sortedList, new stringComparator());
+					while(!sortedList.isEmpty()){
+						write(sortedList.remove(0));
+					}
+				}
 			}catch(Exception e){
 				break;
 			}
 		}
-
-		Collections.sort(sortedList);
-		while(!sortedList.isEmpty()){
-			write(sortedList.remove(0));
-		}
-
 	}
 }

@@ -2,10 +2,14 @@ import java.util.ArrayList;
 
 public class Pipe {
 
-	private ArrayList<String> buffer = new ArrayList<String>();
+	private ArrayList<String> buffer;
+
+	public Pipe(){
+		buffer = new ArrayList<String>();
+	}
 
 	public String get(){
-		return buffer.remove(0);
+		return buffer.remove(buffer.size() - 1);
 	}
 
 	public void add(String data){

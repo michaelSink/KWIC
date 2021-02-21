@@ -1,3 +1,5 @@
+import java.io.EOFException;
+
 abstract class Filter implements Runnable{
 
 	Pipe in, out;
@@ -15,8 +17,13 @@ abstract class Filter implements Runnable{
 		while(true){
 			if(in.hasData()){
 				return in.get();
+			}else{
+				try{
+					Thread.sleep(5);
+				}catch(Exception e){}
 			}
 		}
+
 	}
 
 	protected void write(String data){
