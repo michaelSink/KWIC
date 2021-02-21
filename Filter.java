@@ -1,5 +1,3 @@
-import java.io.EOFException;
-
 abstract class Filter implements Runnable{
 
 	Pipe in, out;
