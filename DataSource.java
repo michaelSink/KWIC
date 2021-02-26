@@ -1,30 +1,49 @@
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 
 public class DataSource implements Runnable{
 
+	inputTransfer transfer;
+
+	private String line;
 	protected Pipe out;
-	private BufferedReader dataSource;
-	
+
+	/*
+		Input: Pipe
+		Output: None
+		Purpose: Setting for out pipe 
+	*/
 	protected void setOut(Pipe out){
 		this.out = out;
 	}
 
-	public DataSource() {
-		dataSource = new BufferedReader(new InputStreamReader(System.in));
+	/*
+		Input: inputTransfer
+		Output: this
+		Purpose: Initialize inputTransfer. 
+	*/
+	public DataSource(inputTransfer transfer) {
+		this.transfer = transfer;
 	}
 
+	/* 
+		Input: None
+		Output: None
+		Purpose: Constantly poll from inputTransfer interface,
+					and send data to out Pipe.
+	*/
 	@Override
 	public void run() {
 		try{
-			String data;
 			while(true){
-				data = dataSource.readLine();
-				if(data == null || data.isEmpty()){
+				this.line = transfer.getLine();
+				if(!line.isEmpty()){
+					String[] inputData = line.split("\n");
+					System.out.println(inputData.length);
+					for(int i = 0; i < inputData.length; i++){
+						System.out.println(i + ":" + inputData[i]);
+						out.add(inputData[i]);
+					}
 					out.add(null);
-					continue;
 				}
-				out.add(data);
 			}
 		}catch(Exception e){
 			System.out.println(e);

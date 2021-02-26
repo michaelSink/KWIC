@@ -1,46 +1,95 @@
-//Usually you will require both swing and awt packages
-// even if you are working with just swings.
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-class gui {
-    public static void main(String args[]) {
+class gui implements inputTransfer, Runnable{
 
-        //Creating the Frame
+   //Variable for holding data entered by user
+   static String data = "";
+
+   //Variable for output text areas
+   JTextArea outputArea = new JTextArea();
+   JTextArea circularArea = new JTextArea();
+
+   //Interfaces to collect output
+   finalOutput output;
+   circularOutput circularOut;
+
+    gui(DataSink sink, CircularShift shift) {
+
+         output = sink;
+         circularOut = shift;
+
+         //Creates frame to  be shown to user
         JFrame frame = new JFrame("KWIC");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(800, 600);
 
-        //Creating the panel at bottom and adding components
-        JPanel panel = new JPanel(); // the panel is not visible in output
+         //JScrollPane scroll = new JScrollPane(outputArea);
+
+        //Create labels and buttons to be displayed
         JLabel label = new JLabel("Enter Text");
-        JButton compute = new JButton("Compute");
+        JLabel outputLabel = new JLabel("Final Output");
+        JLabel circularOutput = new JLabel("Circular Output");
+        JButton compute = new JButton("Submit");
         JButton reset = new JButton("Reset");
 
+        //Input text area
         JTextArea ta = new JTextArea();
 
-        panel.add(label);
-        panel.add(compute);
-        panel.add(reset);
-
+        //Event listeners for submitting
         compute.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-               System.out.println(ta.getText());
+               output.resetOutput();
+               circularOut.resetCircularShift();
+               data = ta.getText().trim();
+               data = "";
             }
          });
 
+         //Event listeners for resetting input
          reset.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                ta.setText("");
+               output.resetOutput();
+               circularOut.resetCircularShift();
             }
          });
 
-        //Adding Components to the frame.
-        frame.getContentPane().add(BorderLayout.NORTH, panel);
-        frame.getContentPane().add(BorderLayout.CENTER, ta);
+         //Add components to frame
+         frame.add(compute);
+         frame.add(reset);
+         frame.add(label);
+         frame.add(ta);
+         frame.add(circularOutput);
+         frame.add(circularArea);
+         frame.add(outputLabel);
+         frame.add(outputArea);
 
-
+         //Set layout and show
+         frame.setLayout(new GridLayout(4, 2));
         frame.setVisible(true);
+
+         //Start collecting input from interfaces
+        new Thread(this).start();
+
     }
+
+	@Override
+	public String getLine() {
+      return data;
+	}
+
+	@Override
+	public void run() {
+      while(true){
+         try{
+            Thread.sleep(50);
+            outputArea.setText(output.getOuput());
+            circularArea.setText(circularOut.getCircularShift());
+
+         }catch(Exception e2){}
+      }
+		
+	}
 
 }

@@ -2,12 +2,16 @@
 public class KWIC {
 
 	static Filter[] filters = {new CircularShift(), new Sorter()};
-	DataSource source;
-	DataSink sink;
+	static DataSource source;
+	static DataSink sink;
 
-	public KWIC(){
-		source = new DataSource();
+	public static void main(String[] data){
+
 		sink = new DataSink();
+
+		inputTransfer transfer = new gui(sink, (CircularShift)filters[0]);
+
+		source = new DataSource(transfer);
 
 		for(int i = 0; i < filters.length + 1; i++){
 			Pipe newPipe = new Pipe();
