@@ -36,6 +36,10 @@ class gui implements inputTransfer, Runnable{
         //Input text area
         JTextArea ta = new JTextArea();
 
+        JScrollPane textArea = new JScrollPane(ta);
+        JScrollPane outputScrollArea = new JScrollPane(outputArea);
+        JScrollPane circularScrollArea = new JScrollPane(circularArea);
+      
         //Event listeners for submitting
         compute.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -59,11 +63,11 @@ class gui implements inputTransfer, Runnable{
          frame.add(compute);
          frame.add(reset);
          frame.add(label);
-         frame.add(ta);
+         frame.add(textArea);
          frame.add(circularOutput);
-         frame.add(circularArea);
+         frame.add(circularScrollArea);
          frame.add(outputLabel);
-         frame.add(outputArea);
+         frame.add(outputScrollArea);
 
          //Set layout and show
          frame.setLayout(new GridLayout(4, 2));
@@ -83,7 +87,7 @@ class gui implements inputTransfer, Runnable{
 	public void run() {
       while(true){
          try{
-            Thread.sleep(50);
+            Thread.sleep(1);
             outputArea.setText(output.getOuput());
             circularArea.setText(circularOut.getCircularShift());
 

@@ -37,9 +37,7 @@ public class DataSource implements Runnable{
 				this.line = transfer.getLine();
 				if(!line.isEmpty()){
 					String[] inputData = line.split("\n");
-					System.out.println(inputData.length);
 					for(int i = 0; i < inputData.length; i++){
-						System.out.println(i + ":" + inputData[i]);
 						out.add(inputData[i]);
 					}
 					out.add(null);
