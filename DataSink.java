@@ -29,7 +29,7 @@ public class DataSink implements Runnable, finalOutput{
 				}
 			}else{
 				try{
-					Thread.sleep(5);
+					Thread.sleep(1);
 				}catch(Exception e){
 					break;
 				}

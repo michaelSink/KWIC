@@ -33,7 +33,7 @@ abstract class Filter implements Runnable{
 				return in.get();
 			}else{
 				try{
-					Thread.sleep(5);
+					Thread.sleep(1);
 				}catch(Exception e){}
 			}
 		}
